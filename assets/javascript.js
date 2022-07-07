@@ -14,8 +14,43 @@ function searchedGame(query) {
     
     fetch(url, options)
         .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
+        .then(jsonData => {
+            // traverse the "element/array of information searched. In this case element returns all the array solutions but just the title with .title"
+            // Need to get it to show reviews and link to the website in addition to the title it is showing now
+           const results = jsonData.map(element => element.title);
+           renderResults(results);
+            console.log(jsonData);
+         });
+        
+}
+// This function was created to attach to the UL with ID resultsList, "foreach" result create a li and show the "innertext" as the result
+function renderResults(results) {
+    const list = document.getElementById("resultsList");
+    list.innerHTML = "";
+    results.forEach(result => {
+        const element = document.createElement("li");
+        element.innerText = result;
+        list.appendChild(element);
+
+    });
+
 }
 
+let searchTimeoutToken = 0;
+
+window.onload = () => {
+    const searchFieldElement = document.getElementById("searchField");
+    searchFieldElement.onkeyup = (event) => {
+// If I dont click on another key for 350 miliseconds the search will start
+        clearTimeout(searchTimeoutToken);
+
+        if(searchFieldElement.value.trim().length === 0) {
+            return;
+        }
+
+        searchTimeoutToken = setTimeout(() => {
+        searchedGame(searchFieldElement.value);
+        }, 350);
+    };
+}
 
