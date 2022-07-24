@@ -17,8 +17,7 @@ function searchedGame(query) {
         .then(jsonData => {
             // traverse the "element/array of information searched. In this case element returns all the array solutions but just the title with .title"
             // Need to get it to show reviews and link to the website in addition to the title it is showing now
-           const results = jsonData.map(element => element.title);
-           renderResults(results);
+           renderResults(jsonData);
             console.log(jsonData);
          });
         
@@ -29,8 +28,11 @@ function renderResults(results) {
     list.innerHTML = "";
     results.forEach(result => {
         const element = document.createElement("li");
-        element.innerText = result;
+        element.innerText = result.title;
+        const element1 = document.createElement("p");
+        element.innerText = result.reviewSummary;
         list.appendChild(element);
+        element.appendChild(element1);
 
     });
 
